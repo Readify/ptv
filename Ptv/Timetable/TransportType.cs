@@ -11,6 +11,7 @@ namespace Ptv.Timetable
         Train,
         Bus,
         Tram,
-        NightRider
+        NightRider,
+        Vline
     }
 }
