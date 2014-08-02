@@ -17,10 +17,12 @@ namespace Ptv.Timetable
         private const string GetPointsOfInterestPathAndQueryFormat = "/v2/poi/{0}/lat1/{1}/long1/{2}/lat2/{3}/long2/{4}/griddepth/{5}/limit/{6}?";
         private const string SearchPathAndQueryFormat = "/v2/search/{0}?";
         private const string GetBroadNextDeparturesPathAndQueryFormat = "/v2/mode/{0}/stop/{1}/departures/by-destination/limit/{2}?";
+        private const string GetSpecificNextDeparturesPathAndQueryFormat = "/v2/mode/{0}/line/{1}/stop/{2}/directionid/{3}/departures/all/limit/{4}?for_utc={5}&";
+        private const string GetStoppingPatternPathAndQueryFormat = "/v2/mode/{0}/run/{1}/stop/{2}/stopping-pattern?for_utc={3}&";
         private const string DeveloperIDFormat = "{0}devid={1}";
         private const string SignatureFormat = "{0}&signature={1}";
         
-        public TimetableClient(string developerID, string securityKey, HmacSha1Hasher hasher)
+        public TimetableClient(string developerID, string securityKey, TimetableClientHasher hasher)
         {
             this.DeveloperID = developerID;
             this.SecurityKey = securityKey;
@@ -29,7 +31,7 @@ namespace Ptv.Timetable
 
         public string DeveloperID { get; private set; }
         public string SecurityKey { get; private set; }
-        public HmacSha1Hasher Hasher { get; private set; }
+        public TimetableClientHasher Hasher { get; private set; }
 
         private string ApplySignature(string pathAndQuery)
         {
@@ -139,6 +141,35 @@ namespace Ptv.Timetable
                 (uint)mode,
                 stopID,
                 limit
+                );
+            var result = await this.ExecuteAsync<Departure[]>(pathAndQuery);
+            return result;
+
+        }
+
+        public async Task<Departure[]> GetSpecificNextDepartures(TransportType mode, string lineID, string stopID, string directionID, uint limit, DateTime fromUtc)
+        {
+            var pathAndQuery = string.Format(
+                TimetableClient.GetSpecificNextDeparturesPathAndQueryFormat,
+                (uint)mode,
+                lineID,
+                stopID,
+                directionID,
+                limit,
+                fromUtc.ToString("o")
+                );
+            var result = await this.ExecuteAsync<Departure[]>(pathAndQuery);
+            return result;
+        }
+
+        public async Task<Departure[]> GetStoppingPattern(TransportType mode, string runID, string stopID, DateTime fromUtc)
+        {
+            var pathAndQuery = string.Format(
+                TimetableClient.GetStoppingPatternPathAndQueryFormat,
+                (uint)mode,
+                runID,
+                stopID,
+                fromUtc.ToString("o")
                 );
             var result = await this.ExecuteAsync<Departure[]>(pathAndQuery);
             return result;

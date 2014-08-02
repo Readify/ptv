@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Ptv.Timetable
 {
-    public delegate byte[] HmacSha1Hasher(byte[] input, byte[] key);
+    public delegate byte[] TimetableClientHasher(byte[] input, byte[] key);
 }

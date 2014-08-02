@@ -92,5 +92,25 @@ namespace Ptv.Tests.Timetable
             // Act.
             var results = await timetableClient.GetBroadNextDepartures(TransportType.Bus, 19112, 1);
         }
+
+        [TestMethod()]
+        public async Task EnsureGetSpecificNextDeparturesReturnsResults()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+
+            // Act.
+            var results = await timetableClient.GetSpecificNextDepartures(TransportType.Bus, "979", "19112", "204", 1, DateTime.UtcNow);
+        }
+
+        [TestMethod()]
+        public async Task EnsureGetStoppingPatternReturnsResults()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+
+            // Act.
+            var results = await timetableClient.GetStoppingPattern(TransportType.Bus, "25808", "19112", DateTime.UtcNow);
+        }
     }
 }

@@ -39,7 +39,7 @@
     <Compile Include="Timetable\DepartureFlagsConverter.cs" />
     <Compile Include="Timetable\Direction.cs" />
     <Compile Include="Timetable\Health.cs" />
-    <Compile Include="Timetable\HmacSha1Hasher.cs" />
+    <Compile Include="Timetable\TimetableClientHasher.cs" />
     <Compile Include="Timetable\Item.cs" />
     <Compile Include="Timetable\LocationConverter.cs" />
     <Compile Include="Timetable\ItemConverter.cs" />
