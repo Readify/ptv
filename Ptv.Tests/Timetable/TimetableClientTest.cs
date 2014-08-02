@@ -10,12 +10,8 @@ namespace Ptv.Tests.Timetable
     [TestClass]
     public class TimetableClientTest
     {
-
-
-        [TestMethod]
-        public async Task EnsureHealthCallReturnsHealthObjectWithIsOKSetToTrue()
+        private TimetableClient GetTimetableClient()
         {
-            // Arrange.
             var hasher = new SHA1CryptoServiceProvider();
             var timetableClient = new TimetableClient(
                 TestConstants.TimetableDeveloperID,
@@ -26,6 +22,14 @@ namespace Ptv.Tests.Timetable
                     var hash = provider.ComputeHash(input);
                     return hash;
                 });
+            return timetableClient;
+        }
+
+        [TestMethod()]
+        public async Task EnsureGetHealthAsyncReturnsHealthObjectWithIsOKSetToTrue()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
 
             // Act.
             var health = await timetableClient.GetHealthAsync();
@@ -34,28 +38,49 @@ namespace Ptv.Tests.Timetable
             Assert.IsTrue(health.IsOK);
         }
 
-        [TestMethod]
-        public async Task EnsureSearchAsyncCallReturnsMoreThanOneTypeOfItem()
+        [TestMethod()]
+        public async Task EnsureSearchAsyncReturnsMoreThanOneTypeOfItem()
         {
             // Arrange.
-            var hasher = new SHA1CryptoServiceProvider();
-            var timetableClient = new TimetableClient(
-                TestConstants.TimetableDeveloperID,
-                TestConstants.TimetableSecurityKey,
-                (input, key) =>
-                {
-                    var provider = new HMACSHA1(key);
-                    var hash = provider.ComputeHash(input);
-                    return hash;
-                });
+            var timetableClient = this.GetTimetableClient();
 
             // Act.
             var results = await timetableClient.SearchAsync("Werribee");
-            var resultGroupedByType = results.GroupBy((item) => item.GetType());
-            var countOfGroupedResults = resultGroupedByType.Count();
+            var resultsGroupedByType = results.GroupBy((item) => item.GetType());
+            var countOfGroupedResults = resultsGroupedByType.Count();
 
             // Assert.
             Assert.IsTrue(countOfGroupedResults > 1);
+        }
+
+        [TestMethod()]
+        public async Task EnsureGetNearbyAsyncReturnsItems()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+
+            // Act.
+            var results = await timetableClient.GetNearbyStops(-37.8136m, 144.9631m);
+            var resultsGroupedByTransportType = results.GroupBy((stop) => stop.TransportType);
+            var countOfGroupedResults = resultsGroupedByTransportType.Count();
+
+            // Assert.
+            Assert.IsTrue(countOfGroupedResults == 3);
+        }
+        
+        [TestMethod()]
+        public async Task EnsureGetPointsOfInterestReturnsResults()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+
+            // Act.
+            var results = await timetableClient.GetPointsOfInterest(
+                PointOfInterestType.Train,
+                -37.9000m, 144.6640m, -37.8136m, 144.9631m,
+                2,
+                10
+                );
         }
     }
 }

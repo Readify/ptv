@@ -40,6 +40,8 @@
     <Compile Include="Timetable\Item.cs" />
     <Compile Include="Timetable\ItemConverter.cs" />
     <Compile Include="Timetable\Line.cs" />
+    <Compile Include="Timetable\PointOfInterestType.cs" />
+    <Compile Include="Timetable\PointsOfInterest.cs" />
     <Compile Include="Timetable\Stop.cs" />
     <Compile Include="Timetable\TimetableClient.cs" />
     <Compile Include="Timetable\TimetableException.cs" />

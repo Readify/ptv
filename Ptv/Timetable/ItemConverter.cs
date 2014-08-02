@@ -33,16 +33,13 @@ namespace Ptv.Timetable
                 case "stop":
                     var stop = result.ToObject<Stop>();
                     return stop;
-                    break;
 
                 case "line":
                     var line = result.ToObject<Line>();
                     return line;
-                    break;
 
                 default:
                     throw new TimetableException();
-                    break;
             }
         }
 

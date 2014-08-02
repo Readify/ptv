@@ -12,8 +12,9 @@ namespace Ptv.Timetable
     public class TimetableClient
     {
         private const string BaseUrl = "http://timetableapi.ptv.vic.gov.au";
-        private const string HealthCheckPathAndQueryFormat = "/v2/healthcheck?timestamp={0}&";
-        private const string StopsNearbyPathAndQueryFormat = "/v2/nearme/latitude/{0}/longitude/{1}?";
+        private const string GetHealthPathAndQueryFormat = "/v2/healthcheck?timestamp={0}&";
+        private const string GetNearbyPathAndQueryFormat = "/v2/nearme/latitude/{0}/longitude/{1}?";
+        private const string GetPointsOfInterestPathAndQueryFormat = "/v2/poi/{0}/lat1/{1}/long1/{2}/lat2/{3}/long2/{4}/griddepth/{5}/limit/{6}?";
         private const string SearchPathAndQueryFormat = "/v2/search/{0}?";
         private const string DeveloperIDFormat = "{0}devid={1}";
         private const string SignatureFormat = "{0}&signature={1}";
@@ -87,16 +88,17 @@ namespace Ptv.Timetable
         public async Task<Health> GetHealthAsync()
         {
             var timestampInIso8601 = DateTime.UtcNow.ToString("o");
-            var pathAndQuery = string.Format(TimetableClient.HealthCheckPathAndQueryFormat, timestampInIso8601);
+            var pathAndQuery = string.Format(TimetableClient.GetHealthPathAndQueryFormat, timestampInIso8601);
             var result = await this.ExecuteAsync<Health>(pathAndQuery);
             return result;
         }
 
-        public async Task<Item[]> SearchNearbyAsync(decimal latitude, decimal longitude)
+        public async Task<Stop[]> GetNearbyStops(decimal latitude, decimal longitude)
         {
-            var pathAndQuery = string.Format(TimetableClient.StopsNearbyPathAndQueryFormat, latitude, longitude);
+            var pathAndQuery = string.Format(TimetableClient.GetNearbyPathAndQueryFormat, latitude, longitude);
             var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
-            return result;
+            var castResult = result.Cast<Stop>().ToArray();
+            return castResult;
         }
 
         public async Task<Item[]> SearchAsync(string keyword)
@@ -104,8 +106,22 @@ namespace Ptv.Timetable
             var pathAndQuery = string.Format(TimetableClient.SearchPathAndQueryFormat, keyword);
             var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
             return result;
-
         }
 
+        public async Task<PointsOfInterest> GetPointsOfInterest(PointOfInterestType pointOfInterestType, decimal topLeftLatitude, decimal topLeftLongitude, decimal bottomRightLatitude, decimal bottomRightLongitude, uint gridDepth, uint limit)
+        {
+            var pathAndQuery = string.Format(
+                TimetableClient.GetPointsOfInterestPathAndQueryFormat,
+                (uint)pointOfInterestType,
+                topLeftLatitude,
+                topLeftLongitude,
+                bottomRightLatitude,
+                bottomRightLongitude,
+                gridDepth,
+                limit
+                );
+            var result = await this.ExecuteAsync<PointsOfInterest>(pathAndQuery);
+            return result;
+        }
     }
 }
