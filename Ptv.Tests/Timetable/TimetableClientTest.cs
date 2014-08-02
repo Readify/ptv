@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ptv.Timetable;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Ptv.Tests.Timetable
 
 
         [TestMethod]
-        public async Task EnsureGetHealthCallReturnsHealthObjectWithIsOKSetToTrue()
+        public async Task EnsureHealthCallReturnsHealthObjectWithIsOKSetToTrue()
         {
             // Arrange.
             var hasher = new SHA1CryptoServiceProvider();
@@ -34,7 +35,7 @@ namespace Ptv.Tests.Timetable
         }
 
         [TestMethod]
-        public async Task SearchSandbox()
+        public async Task EnsureSearchAsyncCallReturnsMoreThanOneTypeOfItem()
         {
             // Arrange.
             var hasher = new SHA1CryptoServiceProvider();
@@ -49,7 +50,12 @@ namespace Ptv.Tests.Timetable
                 });
 
             // Act.
-            var result = await timetableClient.SearchAsync("Werribee");
+            var results = await timetableClient.SearchAsync("Werribee");
+            var resultGroupedByType = results.GroupBy((item) => item.GetType());
+            var countOfGroupedResults = resultGroupedByType.Count();
+
+            // Assert.
+            Assert.IsTrue(countOfGroupedResults > 1);
         }
     }
 }

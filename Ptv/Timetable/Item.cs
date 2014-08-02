@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ptv.Timetable
 {
-    public enum SearchResultType
+    public abstract class Item
     {
-        Stop,
-        Line
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Ptv.Timetable
 {
     [JsonObject()]
-    public class SearchResultItem
+    public class Stop : Item
     {
         [JsonProperty(PropertyName = "suburb")]
         public string Suburb { get; set; }

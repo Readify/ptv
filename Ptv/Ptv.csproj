@@ -37,9 +37,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timetable\Health.cs" />
     <Compile Include="Timetable\HmacSha1Hasher.cs" />
-    <Compile Include="Timetable\SearchResult.cs" />
-    <Compile Include="Timetable\SearchResultItem.cs" />
-    <Compile Include="Timetable\SearchResultType.cs" />
+    <Compile Include="Timetable\Item.cs" />
+    <Compile Include="Timetable\ItemConverter.cs" />
+    <Compile Include="Timetable\Line.cs" />
+    <Compile Include="Timetable\Stop.cs" />
     <Compile Include="Timetable\TimetableClient.cs" />
     <Compile Include="Timetable\TimetableException.cs" />
     <Compile Include="Timetable\TransportType.cs" />

@@ -13,9 +13,11 @@ namespace Ptv.Timetable
     {
         private const string BaseUrl = "http://timetableapi.ptv.vic.gov.au";
         private const string HealthCheckPathAndQueryFormat = "/v2/healthcheck?timestamp={0}&";
+        private const string StopsNearbyPathAndQueryFormat = "/v2/nearme/latitude/{0}/longitude/{1}?";
         private const string SearchPathAndQueryFormat = "/v2/search/{0}?";
-        private const string PathAndQueryWithDeveloperIDFormat = "{0}devid={1}";
-        private const string PathAndQueryWithSignatureFormat = "{0}&signature={1}";
+        private const string DeveloperIDFormat = "{0}devid={1}";
+        private const string SignatureFormat = "{0}&signature={1}";
+        
         public TimetableClient(string developerID, string securityKey, HmacSha1Hasher hasher)
         {
             this.DeveloperID = developerID;
@@ -25,24 +27,41 @@ namespace Ptv.Timetable
 
         public string DeveloperID { get; private set; }
         public string SecurityKey { get; private set; }
-        public HmacSha1Hasher Hasher { get; set; }
+        public HmacSha1Hasher Hasher { get; private set; }
 
         private string ApplySignature(string pathAndQuery)
         {
             var pathAndQueryBytes = Encoding.UTF8.GetBytes(pathAndQuery);
             var securityKeyBytes = Encoding.UTF8.GetBytes(this.SecurityKey);
+
             var signatureBytes = this.Hasher(pathAndQueryBytes, securityKeyBytes);
+            var signature = this.EncodeSignature(signatureBytes);
 
+            var pathAndQueryWithSignature = string.Format(TimetableClient.SignatureFormat, pathAndQuery, signature);
+            return pathAndQueryWithSignature;
+        }
+
+        private string EncodeSignature(byte[] signatureBytes)
+        {
             var builder = new StringBuilder();
-
             foreach (var signatureByte in signatureBytes)
             {
                 builder.AppendFormat("{0:X2}", signatureByte);
             }
 
             var signature = builder.ToString();
-            var signedPathAndQuery = string.Format(TimetableClient.PathAndQueryWithSignatureFormat, pathAndQuery, signature);
-            return signedPathAndQuery;
+            return signature;
+        }
+
+        private string ApplyDeveloperID(string pathAndQuery)
+        {
+            var pathAndQueryWithDeveloperID = string.Format(
+              TimetableClient.DeveloperIDFormat,
+              pathAndQuery,
+              this.DeveloperID
+              );
+
+            return pathAndQueryWithDeveloperID;
         }
 
         private HttpClient GetHttpClient()
@@ -52,59 +71,41 @@ namespace Ptv.Timetable
             return client;
         }
 
-        public async Task<SearchResult[]> SearchAsync(string keyword)
+        private async Task<T> ExecuteAsync<T>(string pathAndQuery)
         {
+            var pathAndQueryWithDeveloperID = this.ApplyDeveloperID(pathAndQuery);
+            var pathAndQueryWithDeveloperIDAndSignature = this.ApplySignature(pathAndQueryWithDeveloperID);
+
             using (var client = this.GetHttpClient())
             {
-                var searchPathAndQuery = string.Format(
-                    TimetableClient.SearchPathAndQueryFormat,
-                    keyword
-                    );
-
-                var searchPathAndQueryWithDeveloperID = string.Format(
-                    TimetableClient.PathAndQueryWithDeveloperIDFormat,
-                    searchPathAndQuery,
-                    this.DeveloperID
-                    );
-
-                var signedSearchPathAndQuery = this.ApplySignature(searchPathAndQueryWithDeveloperID);
-
-                var resultStream = await client.GetStreamAsync(signedSearchPathAndQuery);
-                var resultStreamReader = new StreamReader(resultStream);
-                var resultJsonReader = new JsonTextReader(resultStreamReader);
-
-                var serializer = new JsonSerializer();
-                var searchResult = serializer.Deserialize<SearchResult[]>(resultJsonReader);
-
-                return searchResult;
+                var json = await client.GetStringAsync(pathAndQueryWithDeveloperIDAndSignature);
+                var result = JsonConvert.DeserializeObject<T>(json, new ItemConverter());
+                return result;
             }
         }
 
         public async Task<Health> GetHealthAsync()
         {
-            using (var client = this.GetHttpClient())
-            {
-                var healthCheckPathAndQuery = string.Format(
-                    TimetableClient.HealthCheckPathAndQueryFormat,
-                    DateTime.UtcNow.ToString("o")
-                    );
-
-                var healthCheckPathAndQueryWithDeveloperID = string.Format(
-                    TimetableClient.PathAndQueryWithDeveloperIDFormat,
-                    healthCheckPathAndQuery,
-                    this.DeveloperID
-                    );
-
-                var signedHealthCheckPathAndQuery = this.ApplySignature(healthCheckPathAndQueryWithDeveloperID);
-
-                var resultStream = await client.GetStreamAsync(signedHealthCheckPathAndQuery);
-                var resultStreamReader = new StreamReader(resultStream);
-                var resultJsonReader = new JsonTextReader(resultStreamReader);
-
-                var serializer = new JsonSerializer();
-                var health = serializer.Deserialize<Health>(resultJsonReader);
-                return health;
-            }
+            var timestampInIso8601 = DateTime.UtcNow.ToString("o");
+            var pathAndQuery = string.Format(TimetableClient.HealthCheckPathAndQueryFormat, timestampInIso8601);
+            var result = await this.ExecuteAsync<Health>(pathAndQuery);
+            return result;
         }
+
+        public async Task<Item[]> SearchNearbyAsync(decimal latitude, decimal longitude)
+        {
+            var pathAndQuery = string.Format(TimetableClient.StopsNearbyPathAndQueryFormat, latitude, longitude);
+            var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
+            return result;
+        }
+
+        public async Task<Item[]> SearchAsync(string keyword)
+        {
+            var pathAndQuery = string.Format(TimetableClient.SearchPathAndQueryFormat, keyword);
+            var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
+            return result;
+
+        }
+
     }
 }

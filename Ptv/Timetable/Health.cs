@@ -10,7 +10,6 @@ namespace Ptv.Timetable
     [JsonObject()]
     public class Health
     {
-
         [JsonProperty(PropertyName = "securityTokenOK")]
         public bool IsSecurityTokenOK { get; set; }
 
