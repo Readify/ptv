@@ -80,7 +80,12 @@ namespace Ptv.Timetable
             using (var client = this.GetHttpClient())
             {
                 var json = await client.GetStringAsync(pathAndQueryWithDeveloperIDAndSignature);
-                var result = JsonConvert.DeserializeObject<T>(json, new ItemConverter());
+                var result = JsonConvert.DeserializeObject<T>(
+                    json,
+                    new ItemConverter(),
+                    new LocationConverter()
+                    );
+
                 return result;
             }
         }

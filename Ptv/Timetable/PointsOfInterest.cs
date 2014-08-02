@@ -29,5 +29,8 @@ namespace Ptv.Timetable
 
         [JsonProperty(PropertyName = "totalLocations")]
         public uint TotalLocations { get; set; }
+
+        [JsonProperty(PropertyName = "locations")]
+        public Location[] Locations { get; set; }
     }
 }
