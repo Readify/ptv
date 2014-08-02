@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timetable\DepartureFlags.cs" />
+    <Compile Include="Timetable\DepartureFlagsConverter.cs" />
+    <Compile Include="Timetable\Direction.cs" />
     <Compile Include="Timetable\Health.cs" />
     <Compile Include="Timetable\HmacSha1Hasher.cs" />
     <Compile Include="Timetable\Item.cs" />
@@ -44,12 +47,16 @@
     <Compile Include="Timetable\Location.cs" />
     <Compile Include="Timetable\Outlet.cs" />
     <Compile Include="Timetable\OutletType.cs" />
+    <Compile Include="Timetable\Departure.cs" />
+    <Compile Include="Timetable\Platform.cs" />
     <Compile Include="Timetable\PointOfInterestType.cs" />
     <Compile Include="Timetable\PointsOfInterest.cs" />
+    <Compile Include="Timetable\Run.cs" />
     <Compile Include="Timetable\Stop.cs" />
     <Compile Include="Timetable\TimetableClient.cs" />
     <Compile Include="Timetable\TimetableException.cs" />
     <Compile Include="Timetable\TransportType.cs" />
+    <Compile Include="Timetable\DepartureConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

@@ -16,6 +16,7 @@ namespace Ptv.Timetable
         private const string GetNearbyPathAndQueryFormat = "/v2/nearme/latitude/{0}/longitude/{1}?";
         private const string GetPointsOfInterestPathAndQueryFormat = "/v2/poi/{0}/lat1/{1}/long1/{2}/lat2/{3}/long2/{4}/griddepth/{5}/limit/{6}?";
         private const string SearchPathAndQueryFormat = "/v2/search/{0}?";
+        private const string GetBroadNextDeparturesPathAndQueryFormat = "/v2/mode/{0}/stop/{1}/departures/by-destination/limit/{2}?";
         private const string DeveloperIDFormat = "{0}devid={1}";
         private const string SignatureFormat = "{0}&signature={1}";
         
@@ -82,6 +83,7 @@ namespace Ptv.Timetable
                 var json = await client.GetStringAsync(pathAndQueryWithDeveloperIDAndSignature);
                 var result = JsonConvert.DeserializeObject<T>(
                     json,
+                    new DepartureConverter(),
                     new ItemConverter(),
                     new LocationConverter()
                     );
@@ -108,7 +110,8 @@ namespace Ptv.Timetable
 
         public async Task<Item[]> SearchAsync(string keyword)
         {
-            var pathAndQuery = string.Format(TimetableClient.SearchPathAndQueryFormat, keyword);
+            var encodedKeyword = Uri.EscapeDataString(keyword);
+            var pathAndQuery = string.Format(TimetableClient.SearchPathAndQueryFormat, encodedKeyword);
             var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
             return result;
         }
@@ -126,6 +129,18 @@ namespace Ptv.Timetable
                 limit
                 );
             var result = await this.ExecuteAsync<PointsOfInterest>(pathAndQuery);
+            return result;
+        }
+
+        public async Task<Departure[]> GetBroadNextDepartures(TransportType mode, uint stopID, uint limit)
+        {
+            var pathAndQuery = string.Format(
+                TimetableClient.GetBroadNextDeparturesPathAndQueryFormat,
+                (uint)mode,
+                stopID,
+                limit
+                );
+            var result = await this.ExecuteAsync<Departure[]>(pathAndQuery);
             return result;
         }
     }

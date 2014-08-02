@@ -82,5 +82,15 @@ namespace Ptv.Tests.Timetable
                 10
                 );
         }
+
+        [TestMethod()]
+        public async Task EnsureGetBroadNextDeparturesReturnsResults()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+            
+            // Act.
+            var results = await timetableClient.GetBroadNextDepartures(TransportType.Bus, 19112, 1);
+        }
     }
 }
