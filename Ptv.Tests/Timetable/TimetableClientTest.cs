@@ -12,7 +12,6 @@ namespace Ptv.Tests.Timetable
     {
         private TimetableClient GetTimetableClient()
         {
-            var hasher = new SHA1CryptoServiceProvider();
             var timetableClient = new TimetableClient(
                 TestConstants.TimetableDeveloperID,
                 TestConstants.TimetableSecurityKey,

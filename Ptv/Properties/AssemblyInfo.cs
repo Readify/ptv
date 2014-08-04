@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ptv")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle(".NET Portable Class Library for Public Transport Victoria API")]
+[assembly: AssemblyDescription("This is a .NET PCL which implements the API published by Public Transport Victoria.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Readify")]
 [assembly: AssemblyProduct("Ptv")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]

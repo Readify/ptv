@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Ptv</id>
+    <version>1.0.0-alpha</version>
+    <authors>Readify</authors>
+    <owners>Readify</owners>
+    <licenseUrl>https://raw.githubusercontent.com/Readify/Ptv/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Readify/Ptv/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Ptv is a Portable Class Library which provides .NET-based wrapper around the Public Transport Victoria APIs that have been published at http://data.vic.gov.au.</description>
+    <releaseNotes>This is an alpha and the API is subject to change without notice.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>PTV PCL Timetable Victoria Australia Tram Train Bus Readify</tags>
+    <dependencies>
+      <dependency id="Microsoft.Bcl" version="1.1.9" />
+      <dependency id="Microsoft.Net.Http" version="2.2.22" />
+      <dependency id="Newtonsoft.Json" version="6.0.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Ptv.dll" target="lib\portable-net45+wp80+win8+wpa81" />
+  </files>
+</package>
