@@ -19,6 +19,7 @@ namespace Ptv.Timetable
         private const string GetBroadNextDeparturesPathAndQueryFormat = "/v2/mode/{0}/stop/{1}/departures/by-destination/limit/{2}?";
         private const string GetSpecificNextDeparturesPathAndQueryFormat = "/v2/mode/{0}/line/{1}/stop/{2}/directionid/{3}/departures/all/limit/{4}?for_utc={5}&";
         private const string GetStoppingPatternPathAndQueryFormat = "/v2/mode/{0}/run/{1}/stop/{2}/stopping-pattern?for_utc={3}&";
+        private const string GetLineStopsPathAndQueryFormat = "/v2/mode/{0}/line/{1}/stops-for-line?";
         private const string DeveloperIDFormat = "{0}devid={1}";
         private const string SignatureFormat = "{0}&signature={1}";
         
@@ -172,6 +173,17 @@ namespace Ptv.Timetable
                 fromUtc.ToString("o")
                 );
             var result = await this.ExecuteAsync<Departure[]>(pathAndQuery);
+            return result;
+        }
+
+        public async Task<Stop[]> GetLineStops(TransportType mode, string lineID)
+        {
+            var pathAndQuery = string.Format(
+                TimetableClient.GetLineStopsPathAndQueryFormat,
+                (uint)mode,
+                lineID
+                );
+            var result = await this.ExecuteAsync<Stop[]>(pathAndQuery);
             return result;
         }
     }

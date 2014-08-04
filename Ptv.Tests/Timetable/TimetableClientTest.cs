@@ -112,5 +112,15 @@ namespace Ptv.Tests.Timetable
             // Act.
             var results = await timetableClient.GetStoppingPattern(TransportType.Bus, "25808", "19112", DateTime.UtcNow);
         }
+
+        [TestMethod()]
+        public async Task EnsureGetLineStopsReturnsResults()
+        {
+            // Arrange.
+            var timetableClient = this.GetTimetableClient();
+
+            // Act.
+            var results = await timetableClient.GetLineStops(TransportType.Bus, "987");
+        }
     }
 }
