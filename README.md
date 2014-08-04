@@ -9,7 +9,7 @@ Usage
 Documentation is pretty light on at the moment (we are in Alpha), but if you want to get started quickly just use NuGet to pull down the package with the following command:
 
 ```PowerShell
-Install-Package Ptv
+Install-Package Ptv -Version 1.0.0-alpha -Pre
 ```
 
 Then in your code add the following:
