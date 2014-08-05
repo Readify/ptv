@@ -135,7 +135,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<Departure[]> GetBroadNextDepartures(TransportType mode, uint stopID, uint limit)
+        public async Task<Departure[]> GetBroadNextDepartures(TransportType mode, string stopID, uint limit)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetBroadNextDeparturesPathAndQueryFormat,

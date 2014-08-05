@@ -89,7 +89,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
             
             // Act.
-            var results = await timetableClient.GetBroadNextDepartures(TransportType.Bus, 19112, 1);
+            var results = await timetableClient.GetBroadNextDepartures(TransportType.Bus, "19112", 1);
         }
 
         [TestMethod()]
