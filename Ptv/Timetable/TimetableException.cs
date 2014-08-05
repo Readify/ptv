@@ -11,5 +11,7 @@ namespace Ptv.Timetable
         public TimetableException() { }
         public TimetableException(string message) : base(message) { }
         public TimetableException(string message, Exception inner) : base(message, inner) { }
+
+        public string Json { get; set; }
     }
 }
