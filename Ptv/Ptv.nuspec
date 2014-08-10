@@ -3,7 +3,7 @@
   <metadata>
     <id>Ptv</id>
     <title>.NET Portable Class Library for Public Transport Victoria API</title>
-    <version>1.1.0-alpha</version>
+    <version>1.2.0-alpha</version>
     <authors>Readify</authors>
     <owners>Readify</owners>
     <licenseUrl>https://raw.githubusercontent.com/Readify/Ptv/master/LICENSE</licenseUrl>

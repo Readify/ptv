@@ -10,22 +10,22 @@ namespace Ptv.Timetable
     public class PointsOfInterest
     {
         [JsonProperty(PropertyName = "minLat")]
-        public decimal MinimumLatitude { get; set; }
+        public double MinimumLatitude { get; set; }
 
         [JsonProperty(PropertyName = "minLong")]
-        public decimal MinimumLongitude { get; set; }
+        public double MinimumLongitude { get; set; }
 
         [JsonProperty(PropertyName = "maxLat")]
-        public decimal MaximumLatitude { get; set; }
+        public double MaximumLatitude { get; set; }
 
         [JsonProperty(PropertyName = "maxLong")]
-        public decimal MaximumLongitude { get; set; }
+        public double MaximumLongitude { get; set; }
 
         [JsonProperty(PropertyName = "weightedLat")]
-        public decimal WeightedLatitude { get; set; }
+        public double WeightedLatitude { get; set; }
 
         [JsonProperty(PropertyName = "weightedLong")]
-        public decimal WeightedLongitude { get; set; }
+        public double WeightedLongitude { get; set; }
 
         [JsonProperty(PropertyName = "totalLocations")]
         public uint TotalLocations { get; set; }

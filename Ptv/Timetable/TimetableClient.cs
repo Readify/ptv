@@ -103,7 +103,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<Stop[]> GetNearbyStops(decimal latitude, decimal longitude)
+        public async Task<Stop[]> GetNearbyStopsAsync(double latitude, double longitude)
         {
             var pathAndQuery = string.Format(TimetableClient.GetNearbyPathAndQueryFormat, latitude, longitude);
             var result = await this.ExecuteAsync<Item[]>(pathAndQuery);
@@ -119,7 +119,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<PointsOfInterest> GetPointsOfInterest(PointOfInterestType pointOfInterestType, decimal topLeftLatitude, decimal topLeftLongitude, decimal bottomRightLatitude, decimal bottomRightLongitude, uint gridDepth, uint limit)
+        public async Task<PointsOfInterest> GetPointsOfInterestAsync(PointOfInterestType pointOfInterestType, double topLeftLatitude, double topLeftLongitude, double bottomRightLatitude, double bottomRightLongitude, uint gridDepth, uint limit)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetPointsOfInterestPathAndQueryFormat,
@@ -135,7 +135,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<Departure[]> GetBroadNextDepartures(TransportType mode, string stopID, uint limit)
+        public async Task<Departure[]> GetBroadNextDeparturesAsync(TransportType mode, string stopID, uint limit)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetBroadNextDeparturesPathAndQueryFormat,
@@ -148,7 +148,7 @@ namespace Ptv.Timetable
 
         }
 
-        public async Task<Departure[]> GetSpecificNextDepartures(TransportType mode, string lineID, string stopID, string directionID, uint limit, DateTime fromUtc)
+        public async Task<Departure[]> GetSpecificNextDeparturesAsync(TransportType mode, string lineID, string stopID, string directionID, uint limit, DateTime fromUtc)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetSpecificNextDeparturesPathAndQueryFormat,
@@ -163,7 +163,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<Departure[]> GetStoppingPattern(TransportType mode, string runID, string stopID, DateTime fromUtc)
+        public async Task<Departure[]> GetStoppingPatternAsync(TransportType mode, string runID, string stopID, DateTime fromUtc)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetStoppingPatternPathAndQueryFormat,
@@ -176,7 +176,7 @@ namespace Ptv.Timetable
             return result;
         }
 
-        public async Task<Stop[]> GetLineStops(TransportType mode, string lineID)
+        public async Task<Stop[]> GetLineStopsAsync(TransportType mode, string lineID)
         {
             var pathAndQuery = string.Format(
                 TimetableClient.GetLineStopsPathAndQueryFormat,

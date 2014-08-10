@@ -59,7 +59,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
 
             // Act.
-            var results = await timetableClient.GetNearbyStops(-37.8136m, 144.9631m);
+            var results = await timetableClient.GetNearbyStopsAsync(-37.8136, 144.9631);
             var resultsGroupedByTransportType = results.GroupBy((stop) => stop.TransportType);
             var countOfGroupedResults = resultsGroupedByTransportType.Count();
 
@@ -74,9 +74,9 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
 
             // Act.
-            var results = await timetableClient.GetPointsOfInterest(
+            var results = await timetableClient.GetPointsOfInterestAsync(
                 PointOfInterestType.Train,
-                -37.9000m, 144.6640m, -37.8136m, 144.9631m,
+                -37.9000, 144.6640, -37.8136, 144.9631,
                 2,
                 10
                 );
@@ -89,7 +89,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
             
             // Act.
-            var results = await timetableClient.GetBroadNextDepartures(TransportType.Bus, "19112", 1);
+            var results = await timetableClient.GetBroadNextDeparturesAsync(TransportType.Bus, "19112", 1);
         }
 
         [TestMethod()]
@@ -99,7 +99,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
 
             // Act.
-            var results = await timetableClient.GetSpecificNextDepartures(TransportType.Bus, "979", "19112", "204", 1, DateTime.UtcNow);
+            var results = await timetableClient.GetSpecificNextDeparturesAsync(TransportType.Bus, "979", "19112", "204", 1, DateTime.UtcNow);
         }
 
         [TestMethod()]
@@ -109,7 +109,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
 
             // Act.
-            var results = await timetableClient.GetStoppingPattern(TransportType.Bus, "25808", "19112", DateTime.UtcNow);
+            var results = await timetableClient.GetStoppingPatternAsync(TransportType.Bus, "25808", "19112", DateTime.UtcNow);
         }
 
         [TestMethod()]
@@ -119,7 +119,7 @@ namespace Ptv.Tests.Timetable
             var timetableClient = this.GetTimetableClient();
 
             // Act.
-            var results = await timetableClient.GetLineStops(TransportType.Bus, "987");
+            var results = await timetableClient.GetLineStopsAsync(TransportType.Bus, "987");
         }
     }
 }

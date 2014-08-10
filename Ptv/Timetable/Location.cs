@@ -16,12 +16,12 @@ namespace Ptv.Timetable
         public string LocationName { get; set; }
 
         [JsonProperty(PropertyName = "lat")]
-        public decimal Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [JsonProperty(PropertyName = "lon")]
-        public decimal Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [JsonProperty(PropertyName = "distance")]
-        public decimal Distance { get; set; }
+        public double Distance { get; set; }
     }
 }
